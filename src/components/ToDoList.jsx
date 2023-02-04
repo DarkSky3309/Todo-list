@@ -47,6 +47,7 @@ const ToDoList = () => {
             }))
         }
         setShowModal(false)
+        setNewTask("")
     }
     const handleDeleteToDo = (id) => {
         const updatedToDoList = toDoList.filter(todo => todo.id != id)
@@ -82,13 +83,14 @@ const ToDoList = () => {
                         <div className="flex justify-between">
                             {currentToDo ? (<>
                                 <button className="bg-sunsetOrange rounded-md text-white py-3 px-10" onClick={() => {
+                                    setCurentToDo(null)
                                     setShowModal(false);
                                     handleUpdateToDoList(currentToDo.id, newTask)
                                 }}>Save
                                 </button>
                                 <button className="bg-Tangaroa rounded-md text-white py-3 px-10" onClick={() => {
-                                    setShowModal(false);
-                                    setNewTask("")
+                                    setShowModal(false)
+                                    setCurentToDo(null);
                                 }}>Cancel
                                 </button>
                             </>) : (<>
@@ -132,7 +134,6 @@ const ToDoList = () => {
                                     className={`${todo.completed ? "line-through text-greenTeal" : "text-sunsetOrange"}`}
                                     onClick={() => {
                                         handleToggleCompleted(todo.id);
-                                        console.log(todo.id)
                                     }}>{todo.task}</div>
                                 <div>
                                     <button className={"bg-blue-500 text-white p-1 rounded-md ml-2"} onClick={() => {
