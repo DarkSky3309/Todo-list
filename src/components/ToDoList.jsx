@@ -12,10 +12,10 @@ const ToDoList = () => {
     const [showModal, setShowModal] = useState(false);
     const [currentToDo, setCurentToDo] = useState(null)
     const [newTask, setNewTask] = useState("")
-    console.log(newTask)
+
     useEffect(() => {
         if (toDoList.length > 0) {
-            localStorage.setItem("todolist", JSON.stringify(toDoList))
+            localStorage.setItem("ToDoList", JSON.stringify(toDoList))
         }
     }, [toDoList])
 
@@ -38,16 +38,37 @@ const ToDoList = () => {
         setShowModal(false)
     }
 
-    const handleSort = (sortCriteria) => {
+    const handleUpdateToDoList = (id, task) => {
+        if (task.trim().length === 0) {
+            alert("please enter a task")
+        } else {
+            dispatch(updateTodo({
+                task: task, id: id
+            }))
+        }
+        setShowModal(false)
+    }
+    const handleDeleteToDo = (id) => {
+        const updatedToDoList = toDoList.filter(todo => todo.id != id)
+        dispatch(setTodoList(updatedToDoList))
+        localStorage.setItem("ToDoList", JSON.stringify(updatedToDoList))
+    }
+
+    function handleSort(sortCriteria) {
         dispatch(sortTodo(sortCriteria))
     }
 
     const sortToDoList = toDoList.filter((todo) => {
         if (sortCriteria === "All") return true
         if (sortCriteria === "Completed" && todo.completed) return true;
-        if (sortCriteria === "Not Completed" && !todo.not.completed) return true
+        if (sortCriteria === "Not Completed" && !todo.completed) return true
         return false
     })
+
+    const handleToggleCompleted = (id) => {
+        dispatch(toggleCompleted(id))
+    }
+
     return (
         <div>
             {showModal && (
@@ -60,8 +81,16 @@ const ToDoList = () => {
                                onChange={(e) => setNewTask(e.target.value)}/>
                         <div className="flex justify-between">
                             {currentToDo ? (<>
-                                <button>Save</button>
-                                <button>Cancel</button>
+                                <button className="bg-sunsetOrange rounded-md text-white py-3 px-10" onClick={() => {
+                                    setShowModal(false);
+                                    handleUpdateToDoList(currentToDo.id, newTask)
+                                }}>Save
+                                </button>
+                                <button className="bg-Tangaroa rounded-md text-white py-3 px-10" onClick={() => {
+                                    setShowModal(false);
+                                    setNewTask("")
+                                }}>Cancel
+                                </button>
                             </>) : (<>
                                 <button className="bg-Tangaroa rounded-md text-white py-3 px-10"
                                         onClick={() => setShowModal(false)}>Cancel
@@ -79,22 +108,46 @@ const ToDoList = () => {
             )}
 
             <div className="flex items-center justify-center flex-col">{toDoList.length === 0 ?
-                    (<>
-                        <div className="mb-8">
-                            <div className="sm:w-[500px] sm:h[500px] min-w-[250px]">
-                                <img src={empty} alt=""/>
-                            </div>
-                            <p className="text-center text-Gray">You have no todos, please add one</p>
+                (<>
+                    <div className="mb-8">
+                        <div className="sm:w-[500px] sm:h[500px] min-w-[250px]">
+                            <img src={empty} alt=""/>
                         </div>
-                    </>) :
-                    (<div>
+                        <p className="text-center text-Gray">You have no todos, please add one</p>
+                    </div>
+                </>) :
+                (<div className={"container mx-auto mt-6"}>
+                    <div className={"flex justify-center mb-6"}>
+                        <select className="p-1 outline-none" onChange={e => handleSort(e.target.value)}>
+                            <option className={"text-sm"} value="All">All</option>
+                            <option className={"text-sm"} value="Completed">Completed</option>
+                            <option className={"text-sm"} value="Not Completed">Not Completed</option>
+                        </select>
+                    </div>
+                    <div className={"w-full"}>
                         {sortToDoList.map(todo => (
-                            <div>
-                                <div>{todo.task}</div>
+                            <div key={todo.id}
+                                 className={"flex items-center justify-between mb-6 bg-Tangaroa mx-auto w-full md:w-[75%] rounded-mb p-4 text-white"}>
+                                <div
+                                    className={`${todo.completed ? "line-through text-greenTeal" : "text-sunsetOrange"}`}
+                                    onClick={() => {
+                                        handleToggleCompleted(todo.id);
+                                        console.log(todo.id)
+                                    }}>{todo.task}</div>
+                                <div>
+                                    <button className={"bg-blue-500 text-white p-1 rounded-md ml-2"} onClick={() => {
+                                        setShowModal(true);
+                                        setCurentToDo(todo);
+                                        setNewTask(todo.task)
+                                    }}><TiPencil/></button>
+                                    <button className={"bg-sunsetOrange text-white p-1 rounded-md ml-2"}
+                                            onClick={() => handleDeleteToDo(todo.id)}><BsTrash/></button>
+                                </div>
                             </div>
                         ))}
-                    </div>)
-                }
+                    </div>
+                </div>)
+            }
                 <button onClick={() => setShowModal(true)}
                         className="bg-sunsetOrange text-center text-white py-3 px-10 rounded-md">Add Task
                 </button>

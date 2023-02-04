@@ -16,7 +16,7 @@ const ToDoSlice = createSlice({
             state.todoList.push({
                 task: action.payload.task,
                 id: action.payload.id,
-                complete: false,
+                completed: false,
             })
         },
         sortTodo: (state, action) => {
@@ -28,7 +28,7 @@ const ToDoSlice = createSlice({
             state.todoList[index].task = task
         },
         toggleCompleted: (state, action) => {
-            const {id} = action.payload;
+            const id = action.payload;
             const index = state.todoList.findIndex(todo => todo.id === id);
             state.todoList[index].completed = !state.todoList[index].completed;
         }
