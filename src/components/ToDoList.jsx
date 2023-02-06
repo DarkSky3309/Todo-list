@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {setTodoList, sortTodo} from "../ToDoSlice";
-import Modal_window from "./Modal_window";
+import {setTodoList} from "../ToDoSlice";
+import ModalWindow from "./ModalWindow";
 import MainComponent from "./MainComponent";
 
 const ToDoList = (props) => {
@@ -27,7 +27,7 @@ const ToDoList = (props) => {
     const modalWindowData = {
         showModal: showModal,
         setShowModal: setShowModal,
-        currentToDo:  currentToDo,
+        currentToDo: currentToDo,
         setCurentToDo: setCurentToDo,
         newTask: newTask,
         setNewTask: setNewTask,
@@ -41,7 +41,7 @@ const ToDoList = (props) => {
     }
     return (
         <div>
-            <Modal_window data={modalWindowData}/>
+            <ModalWindow data={modalWindowData}/>
             <MainComponent data={mainWindowData}/>
 
         </div>
