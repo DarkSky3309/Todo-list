@@ -1,6 +1,5 @@
 import React from 'react';
 import {BsMoon, BsSun} from "react-icons/bs";
-
 const BtnChangeColor = (props) => {
     return (
         <div className={"absolute top-10 right-10"}>

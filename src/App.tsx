@@ -4,7 +4,7 @@ import BtnChangeColor from "./components/BtnChangeColor";
 import {useState} from "react";
 
 function App() {
-    const [theme, setTheme] = useState('light')
+    const [theme, setTheme] = useState<string>('light')
 
     return (
         <div className={theme}>
@@ -14,7 +14,6 @@ function App() {
                 <BtnChangeColor theme={theme} setTheme={setTheme}/>
             </div>
         </div>
-
     );
 }
 
