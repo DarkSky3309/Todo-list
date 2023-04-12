@@ -35,7 +35,7 @@ const ModalWindow = (props: any) => {
         <div>
             {showModal && (
                 <div
-                    className="fixed w-full left-0 top-0 h-full bg-transparentBlack flex items-center justify-center transition">\
+                    className="z-10 fixed w-full left-0 top-0 h-full bg-transparentBlack flex items-center justify-center transition">\
                     <div className="bg-white p-8 rounded-md min-w-[350px] max-w-[500px] w-full">
                         <input className="w-full border b-2 rounded-md outline-none mb-8" type="text"
                                placeholder={currentToDo ? "Update your task here" : "Enter your task here"}
